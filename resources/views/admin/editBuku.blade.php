@@ -1,8 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<link rel="stylesheet"
-href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
 <title>Edit Data Buku</title>
 </head>
@@ -20,8 +19,7 @@ href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css">
 @if (Session::get('success'))
 <div class="alert alert-success alert-dismissible fade show" role="alert">
 <strong>Berhasil!</strong> {{ Session::get('success')}}
-<button type="button" class="btn-close" data-bs-
-dismiss="alert" aria-label="Close"></button>
+<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 </div>
 @endif
 @if (Session::get('failed'))
@@ -96,7 +94,7 @@ Terbit</label>
 <select class="form-select" aria-label="Floating label select example" name="kategori">
         @foreach ($kategori as $option)
         <option value="{{ $option }}" 
-         @if ($option == $data->kategori) selected @endif>{{ $option }}
+         @if ($option = $data->kategori) selected @endif>{{ $option }}
         </option>
         @endforeach
 </select>

@@ -1,8 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<link rel="stylesheet"
-href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
 <title>Edit Data</title>
 </head>
@@ -18,16 +17,13 @@ href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css">
 </a>
 <div class="container mt-3">
 @if (Session::get('success'))
-<div class="alert alert-success alert-dismissible fade
-show" role="alert">
-<strong>Berhasil!</strong> {{ Session::get('success')
-}}
+<div class="alert alert-success alert-dismissible fade show" role="alert">
+<strong>Berhasil!</strong> {{ Session::get('success') }}
 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 </div>
 @endif
 @if (Session::get('failed'))
-<div class="alert alert-danger alert-dismissible fade show"
-role="alert">
+<div class="alert alert-danger alert-dismissible fade show" role="alert">
 <strong>Gagal!</strong> {{ Session::get('success') }}
 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 </div>
@@ -44,9 +40,7 @@ role="alert">
 <label class="text-secondary mb-2">Nama
 Admin</label>
 <input type="text" class="form-control
-border border-secondary form-control"
-name="name" required value="{{ $data-
->name }}">
+border border-secondary form-control" name="name" required value="{{ $data->name }}">
 <span class="text-danger">
 @error('name')
 {{ $message }}
@@ -56,10 +50,8 @@ name="name" required value="{{ $data-
 <div class="form-group mt-1">
 <label class="text-secondary mb-2">Email
 Admin</label>
-<input type="email" class="form-control
-border border-secondary form-control"
-name="email" required value="{{ $data-
->email }}">
+<input type="email" class="form-control border border-secondary form-control"
+name="email" required value="{{ $data->email }}">
 <span class="text-danger">
 @error('email')
 {{ $message }}
@@ -67,35 +59,28 @@ name="email" required value="{{ $data-
 </span>
 </div><br>
 <div class="form-group mt-1">
-<label class="text-secondary">Pilih Jenis
-Kelamin</label><br>
+<label class="text-secondary">Pilih Jenis Kelamin</label><br>
 <div class="form-check form-check-inline">
 <input class="form-check-input"
 type="radio" name="jenisKelamin" value="Laki-laki"
 @if ($data->jenis_kelamin == 'Laki-
 laki') checked @endif>
-<label class="form-check-label"
-for="inlineRadio1">Laki-laki</label>
+<label class="form-check-label" for="inlineRadio1">Laki-laki</label>
 </div>
 <div class="form-check form-check-inline">
-<input class="form-check-input"
-type="radio" name="jenisKelamin" value="Perempuan"
+<input class="form-check-input" type="radio" name="jenisKelamin" value="Perempuan"
 @if ($data->jenis_kelamin ==
 'Perempuan') checked @endif>
-<label class="form-check-label"
-for="inlineRadio2">Perempuan</label>
+<label class="form-check-label" for="inlineRadio2">Perempuan</label>
 </div>
 </div>
-<button type="submit" class="btn btn-success
-mt-5">Edit Data Admin</button>
+<button type="submit" class="btn btn-success mt-5">Edit Data Admin</button>
 </form>
 </div>
 </div>
 </div>
 </div><br><br><br><br>
 </div>
-<script
-src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.
-min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
