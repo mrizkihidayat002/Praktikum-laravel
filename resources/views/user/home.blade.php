@@ -1,44 +1,67 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>mrizki hidayat</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css">
+    <title>Homepage</title>
 </head>
-
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <nav class="navbar navbar-dark bg-primary">
         <div class="container">
-            <a class="navbar-brand" href="{{route('admin.home')}}">
-                <img src="{{('../images/logo polbeng.png')}}" alt="Logo" width="30" height="24" class="d-inline-block align-text-top">
-                Selamat Datang {{ Auth::user()->name}} Di Perpustakaan Politeknik Negeri Bengkalis
-            </a>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav">
-                    <li class="nav-item">
-                        <a href="{{ route('logout') }}" class="nav-link" style="margin-left: 420px;">Logout</a>
-                    </li>
-                </ul>
-            </div>
+            <a class="navbar-brand" href="/">Politeknik Negeri Bengkalis | D-IV Rakayasa Perangkat Lunak</a>
         </div>
     </nav>
-    <div class="container" style="margin-top: 150px">
-        <div class="row">
-            <div class="col-12 text-center">
-                <h1 class="text-secondary">Selamat Datang {{ Auth::user()->name}}</h1>
-                <h4 class="text-secondary">Di Perpustakaan Politeknik Negeri
-                    Bengkalis</h4>
-                <p class="mt-4 ">
-                    <a href="{{route('landing.berita_rpl')}}" class="text-decoration-none">Berita rpl</a> |
-                    <a href="{{route('landing.profile_dosen')}}" class="text-decoration-none">Profile Dosen</a> |
-                    <a href="{{route('landing.profile_kelulusan_rpl')}}" class="text-decoration-none">Profile Kelulusan RPL</a>
-                </p>
+    <div class="container">
+        <div class="row mt-3">
+            <div class="col">
+                <h4 class="text-secondary">Selamat Datang {{ Auth::user()->name }}</h4>
+            </div>
+            <div class="col"></div>
+            <div class="col-1">
+                <a href="{{ route('logout') }}" style="text-decoration: none">
+                    <p class="text-end text-black fw-semibold">Logout</p>
+                </a>
             </div>
         </div>
+        <div class="row mt-5 mb-5">
+            <div class="col"></div>
+            <div class="col-6">
+                <form action="" method="GET">
+                    @csrf
+                    <div class="input-group">
+                        <input type="search" name="search" class="form-control rounded" placeholder="Cari nama buku" aria-label="Search" aria-describedby="search-addon" />
+                        <button type="submit" class="btn btn-outline-primary">search</button>
+                    </div>
+                </form>
+            </div>
+            <div class="col"></div>
+        </div>
+        @foreach ($data as $buku)
+        <div class="card mb-4">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-2">
+                        <img style="width: 150px" src="{{ asset('images/' . $buku->gambar) }}" alt="cover buku">
+                    </div>
+                    <div class="col-2">
+                        <p class="fw-bold">Judul</p>
+                        <p class="fw-bold">Penulis</p>
+                        <p class="fw-bold">Penerbit</p>
+                        <p class="fw-bold">Tahun Terbit</p>
+                        <p class="fw-bold">Deskripsi Buku</p>
+                    </div>
+                    <div class="col-8">
+                        <p>{{ $buku->judul_buku }}</p>
+                        <p>{{ $buku->penulis }}</p>
+                        <p>{{ $buku->penerbit }}</p>
+                        <p>{{ $buku->tahun_terbit }}</p>
+                        <p>{{ $buku->deskripsi }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @endforeach
+        {{ $data->links() }}
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
-
 </html>

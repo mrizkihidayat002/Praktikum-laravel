@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
+use App\Models\Buku;
 
 
 class LoginRegisterController extends Controller
@@ -21,9 +22,14 @@ class LoginRegisterController extends Controller
         return view('auth.register');
     }
 
-    public function userHome()
+    public function userHome(Request $request)
     {
-        return view('user.home');
+        $search = $request->input('search');
+
+        $data = Buku::where(function($query) use ($search){
+            $query->where('judul_buku', 'LIKE', '%' .$search. '%');
+        })->paginate(5);
+        return view('user.home', compact('data'));
     }
 
     public function adminHome(Request $request)

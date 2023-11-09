@@ -9,6 +9,9 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use App\Models\Buku;
 use Illuminate\Validation\Rules\Exists;
+use Barryvdh\DomPDF\Facade\Pdf;
+use App\Models\Peminjaman;
+use App\Charts\ChartPeminjaman;
 
 class AdminController extends Controller
 {
@@ -207,5 +210,101 @@ class AdminController extends Controller
         } else {
             return back()->with('failed', 'Gagal menghapus data buku!');
         }
+    }
+
+    public function adminPeminjaman(Request $request, ChartPeminjaman $chartPeminjaman) {
+        $search = $request->input('search');
+        $data = Peminjaman::where(function($query) use ($search) {
+            $query->where('id_user', 'LIKE', '%' . $search . '%');
+        })->paginate(5);
+        return view('admin.peminjaman', compact('data', 'chart'));
+    }
+    
+    public function tambahPeminjaman() {
+        return view('admin.tambahPeminjaman');
+    }
+    
+    public function postTambahPeminjaman(Request $request) {
+        $request->validate([
+            'idUser' => 'required',
+            'kodeBuku' => 'required|int',
+            'tanggalPeminjaman' => 'required|date',
+            'tanggalPengembalian' => 'required|date'
+        ]);
+        $peminjaman = new Peminjaman;
+        $peminjaman->id_user = $request->idUser;
+        $peminjaman->id_buku = $request->kodeBuku;
+        $peminjaman->tanggal_pinjam = $request->tanggalPeminjaman;
+        $peminjaman->tanggal_kembali = $request->tanggalPengembalian;
+        $peminjaman->status = 'Belum Dikembalikan';
+        $peminjaman->save();
+        if ($peminjaman) {
+            return back()->with('success', 'Data peminjaman berhasil ditambahkan!');
+        } else {
+            return back()->with('failed', 'Gagal menambahkan data peminjaman!');
+        }
+    }
+    
+    public function editPeminjaman($id) {
+        $data = Peminjaman::find($id);
+        return view('admin/editPeminjaman', compact('data'));
+    }
+    
+    public function postEditPeminjaman(Request $request, $id) {
+        $request->validate([
+            'idUser' => 'required',
+            'kodeBuku' => 'required|int',
+            'tanggalPeminjaman' => 'required',
+            'tanggalPengembalian' => 'required',
+            'status' => 'required'
+        ]);
+        $peminjaman = Peminjaman::find($id);
+        $peminjaman->id_user = $request->idUser;
+        $peminjaman->id_buku = $request->kodeBuku;
+        $peminjaman->tanggal_pinjam = $request->tanggalPeminjaman;
+        $peminjaman->tanggal_kembali = $request->tanggalPengembalian;
+        $peminjaman->status = $request->status;
+        $peminjaman->save();
+        if ($peminjaman) {
+            return back()->with('success', 'Data peminjaman berhasil di update!');
+        } else {
+            return back()->with('failed', 'Gagal mengupdate data peminjaman!');
+        }
+    }
+    
+    public function deletePeminjaman($id) {
+        $data = Peminjaman::find($id);
+        $data->delete();
+        if ($data) {
+            return back()->with('success', 'Data peminjaman berhasil dihapus!');
+        } else {
+            return back()->with('failed', 'Gagal menghapus data peminjaman!');
+        }
+    }
+
+    public function detailPeminjaman($id_peminjaman, $id_user, $id_buku) {
+        $detailPeminjaman = Peminjaman::select('peminjaman.*', 'buku.*', 'users.*')
+                            ->join('buku', 'peminjaman,id_buku', '=', 'buku.id')
+                            ->join('users', 'peminjaman.id_user', '=', 'users.id')
+                            ->where('peminjaman.id', $id_peminjaman)
+                            ->where('buku.id', $id_buku)
+                            ->where('users.id', $id_user)
+                            ->first();
+        if(!$detailPeminjaman) {
+            abort(404, 'Data tidak ditemukan');
+        }
+
+        return view('admin.detailPeminjaman', compact('detailPeminjaman'));
+    }
+
+    public function cetakDataPeminjaman() {
+        $data = DB::table('peminjaman')
+        ->join('users', 'users.id', '=', 'peminjaman.id_user')
+        ->join('buku', 'buku.id', '=', 'peminjaman.id_buku')
+        ->select('peminjaman.*', 'users.name', 'buku.judul_buku')
+        ->get();
+        $pdf = PDF::loadView('admin.cetakPeminjaman', ['data' => $data]);
+        return $pdf->stream();
+        
     }
 }

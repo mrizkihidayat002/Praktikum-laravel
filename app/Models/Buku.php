@@ -8,12 +8,12 @@ use Illuminate\Database\Eloquent\Model;
 class Buku extends Model
 {
     use HasFactory;
-
-    protected $table = 'buku';
+    protected  $table = 'bukus';
 
     protected $fillable =[
         'gambar',
         'kode_buku',
+        'judul_buku',
         'penulis',
         'penerbit',
         'kategori',
